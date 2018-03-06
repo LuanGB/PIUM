@@ -56,7 +56,7 @@ end
 
 cmd_text = "Available commands:
   add: Adds User to specified database
-  rem: Removes User from specified database
+  rm: Removes User from specified database
   lu: Lists all Users from specified database and respective attributes
   ld: Lists all Databases currently managed by PUMI
   cmd: displays this message
@@ -72,7 +72,7 @@ help_text = "Commands Usage:
     INHERIT | NOINHERIT |
     REPLICATION | NOREPLICATION >
 
-  - rem <username> <database>
+  - rm <username> <database>
   
   - lu <database>
 "
@@ -96,7 +96,7 @@ while true
 				puts e.message
 			end
 
-		when 'rem'
+		when 'rm'
 			begin
 				if cmd.size < 3
 					raise ArgumentError, "# ArgumentError: Wrong Number of Arguments (given #{cmd.size-1}, expected 2)", caller

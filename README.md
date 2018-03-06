@@ -11,7 +11,7 @@ and
 ## Using:
 * add: Adds User to specified database
 
-* rem: Removes User from specified database
+* rm: Removes User from specified database
 
 * lu: Lists all Users from specified database and respective attributes
 
@@ -39,6 +39,6 @@ and
   
 	REPLICATION | NOREPLICATION
 
-- rem \<username> \<database>
+- rm \<username> \<database>
 
 - lu \<database>
