@@ -124,7 +124,9 @@ help_text = "Commands Usage:
     options parameter is opitional
 	
   - aru <username> < ADMIN | READ_ONLY | READ_WRITE > <database>
-    ADMIN: grants user total access to database, including the permission to create|drop tables;
+    ADMIN: User has total access to database, including the permission to create|drop tables;
+    READ_WRITE: User have total access to database values, but not the permission to create|drop tables;
+    READ_ONLY: User can only use SELECT command within the database;
 
   - rm <username> <database>
   
