@@ -13,6 +13,8 @@ and
 
 * rm: Removes User from specified database
 
+* aru: Assign Role to User: assigns one of the presetted roles to a user on a given database
+
 * lu: Lists all Users from specified database and respective attributes
 
 * ld: Lists all Databases currently managed by PUMI
@@ -25,19 +27,28 @@ and
 
 ## Commands Usage:
 
-- add \<username> \<password> \<database> \<options>
+- add \<username> \<password> \<database> \[options]
 
-* options list: 
+	* options list: 
   
-	SUPERUSER | NOSUPERUSER | 
+		* SUPERUSER | NOSUPERUSER | 
   
-	CREATEDB | NOCREATEDB | 
+		* CREATEDB | NOCREATEDB | 
   
-	CREATEROLE | NOCREATEROLE | 
+		* CREATEROLE | NOCREATEROLE | 
   
-	INHERIT | NOINHERIT |
+		* INHERIT | NOINHERIT |
   
-	REPLICATION | NOREPLICATION
+		* REPLICATION | NOREPLICATION
+	
+	
+- aru \<username> \< ADMIN | READ_ONLY | READ_WRITE > \<database>
+	
+	* ADMIN: User has total access to database, including the permission to create|drop tables;
+	
+	* READ_WRITE: User have total access to database values, but not the permission to create|drop tables;
+	
+	* READ_ONLY: User can only use SELECT command within the database;
 
 - rm \<username> \<database>
 
