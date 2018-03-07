@@ -11,8 +11,9 @@ Bundler.require
 	teste3: PG::Connection.open(host: :localhost , dbname: :teste3 , user: :luan, password: "P@55W0rdPG")
 }
 
-def add_user(name, password, db, permissions)
-	
+######################################################################################
+
+def add_user(name, password, db, permissions = nil)
 	begin
 		res = db.exec_params("CREATE ROLE #{name} LOGIN #{permissions.join(" ") unless permissions.nil?} ENCRYPTED PASSWORD '#{password}'")
 		puts res.cmd_status
@@ -50,7 +51,6 @@ def list_databases
 	puts @databases.keys.join(" | ")
 end
 
-#TODO: add and remove database
 
 #############################################################################
 
@@ -64,20 +64,21 @@ cmd_text = "Available commands:
   exit: Quit PUMI"
 
 help_text = "Commands Usage:
-  - add <username> <password> <database> <options>
+  - add <username> <password> <database> [options]
     options list: 
     SUPERUSER | NOSUPERUSER | 
     CREATEDB | NOCREATEDB | 
     CREATEROLE | NOCREATEROLE | 
     INHERIT | NOINHERIT |
     REPLICATION | NOREPLICATION >
+    options parameter is opitional
 
   - rm <username> <database>
   
   - lu <database>
 "
 
-puts "Postgres Users Manager Interactive (PUMI)
+puts "Postgres Interactive Users Manager (PIUM)
 (type 'cmd' for list the commands and 'help' to get help)"
 
 while true
@@ -88,8 +89,8 @@ while true
 	case cmd[0]
 		when 'add'
 			begin
-				if cmd.size < 5 
-					raise ArgumentError, "# ArgumentError: Wrong Number of Arguments (given #{cmd.size}, expected 4)", caller
+				if cmd.size < 4
+					raise ArgumentError, "# ArgumentError: Wrong Number of Arguments (given #{cmd.size}, expected at least 3)", caller
 				end
 				add_user cmd[1], cmd[2], @databases[cmd[3].to_sym], cmd[4..cmd.size-1]
 			rescue Exception => e
@@ -98,7 +99,7 @@ while true
 
 		when 'rm'
 			begin
-				if cmd.size < 3
+				if cmd.size != 3
 					raise ArgumentError, "# ArgumentError: Wrong Number of Arguments (given #{cmd.size-1}, expected 2)", caller
 				end
 				remove_user cmd[1], @databases[cmd[2].to_sym]
