@@ -51,12 +51,62 @@ def list_databases
 	puts @databases.keys.join(" | ")
 end
 
+def assign_role(user, role, db)
+  role.downcase!
+	case role
+	when 'read_only'
+		assign_role_read_only(user, db)
+	when 'read_write'
+		assign_role_read_write(user, db)
+	when 'admin'
+		assign_role_admin(user, db)
+	else
+		puts "Role not found."
+	end
+end
 
-#############################################################################
+###ROLES###
+
+def assign_role_admin(user, db)
+	begin
+	db.exec_params("GRANT USAGE ON SCHEMA public TO #{user}")
+	db.exec_params("GRANT ALL ON SCHEMA public TO #{user}")
+	db.exec_params("GRANT ALL ON ALL TABLES IN SCHEMA public TO #{user}")
+	puts "$ #{user} is now an ADMIN User."
+	rescue Exception => e
+		puts e.message
+	end
+end
+
+def assign_role_read_only(user, db)
+	begin
+	db.exec_params("GRANT USAGE ON SCHEMA public TO #{user}")
+	db.exec_params("REVOKE CREATE ON SCHEMA public FROM public, #{user}")
+	db.exec_params("REVOKE ALL ON ALL TABLES IN SCHEMA public FROM #{user}")
+	db.exec_params("GRANT SELECT ON ALL TABLES IN SCHEMA public TO #{user}")
+	puts "$ #{user} is now a READ_ONLY User."
+	rescue Exception => e
+		puts e.message
+	end
+end
+
+def assign_role_read_write(user, db)
+	begin
+	db.exec_params("GRANT USAGE ON SCHEMA public TO #{user}")
+	db.exec_params("REVOKE CREATE ON SCHEMA public FROM public, #{user}")
+	db.exec_params("GRANT ALL ON ALL TABLES IN SCHEMA public TO #{user}")
+	puts "$ #{user} is now a READ_WRITE User."
+	rescue Exception => e
+		puts e.message
+	end
+end
+
+######################################################################################
 
 cmd_text = "Available commands:
   add: Adds User to specified database
   rm: Removes User from specified database
+  aru: Assign Role to User: assigns one of the presetted roles to a user on a given database
   lu: Lists all Users from specified database and respective attributes
   ld: Lists all Databases currently managed by PUMI
   cmd: displays this message
@@ -72,6 +122,9 @@ help_text = "Commands Usage:
     INHERIT | NOINHERIT |
     REPLICATION | NOREPLICATION >
     options parameter is opitional
+	
+  - aru <username> < ADMIN | READ_ONLY | READ_WRITE > <database>
+    ADMIN: grants user total access to database, including the permission to create|drop tables;
 
   - rm <username> <database>
   
@@ -116,6 +169,17 @@ while true
 			rescue Exception => e
 				puts e.message
 			end
+
+		when 'aru'
+      begin
+        if cmd.size != 4
+          raise ArgumentError, "# ArgumentError: Wrong Number of Arguments (given #{cmd.size-1}, expected 1)", caller
+        end
+        assign_role cmd[1], cmd[2], @databases[cmd[3].to_sym]
+      rescue Exception => e
+        puts e.message
+      end
+
 		when 'ld'
 			list_databases
 		when 'cmd'
