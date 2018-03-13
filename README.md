@@ -9,25 +9,21 @@ and
 > ruby main.rb
 
 ## Using:
-* add: Adds User to specified database
+* create: Create User to specified database
 
 * rm: Removes User from specified database
 
-* aru: Assign Role to User: assigns one of the presetted roles to a user on a given database
+* add: Add Role to User: assigns one of the presetted roles to a user on a given database
 
-* lu: Lists all Users from specified database and respective attributes
-
-* ld: Lists all Databases currently managed by PUMI
-
-* cmd: displays this message
+* list: Lists all Users and respective attributes or lists all Databases currently managed by PIUM
 
 * help: displays commands usage
 
-* exit: Quit PIUM"
+* exit: Quit PIUM
 
 ## Commands Usage:
 
-- add \<username> \<password> \<database> \[options]
+- create \<username> \<password> \<database> \[options]
 
 	* options list: 
   
@@ -40,9 +36,8 @@ and
 		* INHERIT | NOINHERIT |
   
 		* REPLICATION | NOREPLICATION
-	
-	
-- aru \<username> \< ADMIN | READ_ONLY | READ_WRITE > \<database>
+
+- add \<username> \< ADMIN | READ_ONLY | READ_WRITE > \<database>
 	
 	* ADMIN: User has total access to database, including the permission to create|drop tables;
 	
@@ -52,4 +47,4 @@ and
 
 - rm \<username> \<database>
 
-- lu \<database>
+- list \< users | databases | groups > 
